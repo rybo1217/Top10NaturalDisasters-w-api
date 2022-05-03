@@ -131,6 +131,42 @@ router.get('/stateloc/:record_id', async (req, res) => {
         }
       });
 
+      router.put('/disasters/:disaster_id', async (req, res) => {
+        try {
+          await db.record_state.update(
+            {
+              disaster_id: req.body.disaster_id,
+              type: req.body.type
+            },
+            {
+              where: {
+                disaster_id: req.body.disaster_id
+              }
+            }
+          );
+          console.log(req.body)
+          res.send('Successfully Updated');
+        } catch (err) {
+          console.error(err);
+         
+          res.error('Server error');
+        }
+      });//Not taking the input but saying its update
+      
+      router.delete('/disasters/:disaster_id', async (req, res) => {
+        try {
+          await db.record_state.destroy({
+            where: {
+              disaster_id: req.params.disaster_id
+            }
+          });
+          res.send('Successfully Deleted');
+        } catch (err) {
+          console.error(err);
+          res.error('Server error');
+        }
+      });
+
 
  
     
