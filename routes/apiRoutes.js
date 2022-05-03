@@ -114,13 +114,14 @@ router.get('/stateloc/:record_id', async (req, res) => {
           res.send('Already Exist');
         }
       });
+
       router.post('/disasters/:disaster_id', async (req, res) => {
-        const halls = await db.record_state.findAll();
+        const halls = await db.disaster_type.findAll();
         const currentId = (await halls.length) + 1;
         try {
-          const newState = await db.record_state.create({
+          const newState = await db.disaster_type.create({
             disaster_id: currentId,
-            type: req.body.state,
+            type: req.body.type,
             disaster_id: req.body.disaster_id
             
           });
@@ -133,7 +134,7 @@ router.get('/stateloc/:record_id', async (req, res) => {
 
       router.put('/disasters/:disaster_id', async (req, res) => {
         try {
-          await db.record_state.update(
+          await db.disaster_type.update(
             {
               disaster_id: req.body.disaster_id,
               type: req.body.type
@@ -154,7 +155,7 @@ router.get('/stateloc/:record_id', async (req, res) => {
       });//Not taking the input but saying its update
       router.delete('/disasters/:disaster_id', async (req, res) => {
         try {
-          await db.record_state.destroy({
+          await db.disaster_type.destroy({
             where: {
               disaster_id: req.params.disaster_id
             }
@@ -162,7 +163,7 @@ router.get('/stateloc/:record_id', async (req, res) => {
           res.send('Successfully Deleted');
         } catch (err) {
           console.error(err);
-          res.error('Server error');
+          res.send('Server error');
         }
       });
 
