@@ -4,9 +4,10 @@ function getRandomIntInclusive(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
-    function initMap(targetID) {
-    const latLong = [38.784, -76.872];
-    const map = L.map(targetID).setView(latLong, 13); // lat long zoom
+   /* function initMap(targetID) {
+    const latLong = [38.784, -95.872];
+    const map = L.map(targetID).setView(latLong, 5); // lat long zoom
+   // var map = L.map('map').setView([51.505, -0.09], 13);
     L.tileLayer(
       'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}',
       {
@@ -21,32 +22,41 @@ function getRandomIntInclusive(min, max) {
       }
     ).addTo(map);
     return map;
+
+    
   }
+  */
   
-  function addMapMarkers(map, collection) {
-    map.eachLayer((layer) => {
-      if (layer instanceof L.Marker) {
-        layer.remove();
+  var map = L.map('map').setView([38.784, -95.872], 5);
+  
+  L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    maxZoom: 18,
+    id: 'mapbox/streets-v11',
+    tileSize: 512,
+    zoomOffset: -1,
+    accessToken: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
+}).addTo(map);
+
+var marker = L.marker([38.784, -95.872]).addTo(map);
+
+var popup = marker.bindPopup('<b>Type: Hurricane </b><br>State:');
+
+router.get('/stateloc/:record_id', async (req, res) => {
+  try {
+    const dt = await db.record_state.findAll({
+      where: {
+        record_id: req.params.record_id
       }
     });
-    collection.forEach((item) => {
-      const point = item.geocoded_column_1?.coordinates;
-      console.log(item.geocoded_column_1?.coordinates);
-      L.marker([point[1], point[0]]).addTo(map);
-    });
+
+    res.json(dt);
+  } catch (err) {
+    console.error(err);
+    res.send(err);
   }
-  
-  function refreshList(target, storage) {
-    target.addEventListener('click', async (event) => {
-      event.preventDefault();
-      localStorage.clear();
-      const results = await fetch('/api/disasters');
-      const arrayFromJson = await results.json();
-      console.log(arrayFromJson);
-      localStorage.setItem(storage, JSON.stringify(arrayFromJson.data));
-      location.reload();
-    });
-  }
+});
+
 
   async function mainEvent() {
     // the async keyword means we can make API requests
@@ -81,19 +91,7 @@ function getRandomIntInclusive(min, max) {
         createHtmlList(selectResto);
       });
   
-      zipcode.addEventListener('input', async (event) => {
-        console.log(event.target.value);
-        if (currentArray.length < 1) {
-          return;
-        }
-        const selectResto = currentArray.filter((item) => {
-          const lowerzip = item.zip.toLowerCase();
-          const lowerValue = event.target.value.toLowerCase();
-          return lowerzip.includes(lowerValue);
-        });
-        console.log(selectResto);
-        createHtmlList(selectResto);
-      });
+      
       // inputListener(resto);
       form.addEventListener('submit', async (submitEvent) => {
         // async has to be declared all the way to get an await
