@@ -1,1 +1,80 @@
-<h1> Ryans Indivual Assignment 3 Display </h1>
+<header>
+    <body style="background-color:rgb(0, 0, 0);"></body>
+    <font face="Arial" size="20px" color="red"><h1>&nbsp &nbsp Frequencies of Disasters for the Top 10 States with the Most Natural Disasters</h1></font>
+</header>
+
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+ <link rel="stylesheet" href="styles2.css" />
+<style>
+    
+    table, th, td{
+  width: 100%;
+  background-color: rgb(0, 0, 0);
+  border: 2px solid;
+  border-color: red;
+}
+    th{ 
+        color:rgb(223, 2, 2);
+        
+            }
+    
+    td{
+        color: red;
+    }
+    
+</style>
+
+
+<table class="table table-striped">
+    <tr  class="bg-info">
+        <th>State</th>
+        <th>Frequency of Natural Disasters</th>
+        
+    </tr>
+
+    <tbody id="myTable">
+        
+    </tbody>
+</table>
+
+<script>
+	var myArray = []
+
+    async function fetchData(){
+    const url = '/api/stateloc'
+    const row1 = await fetch(url)
+    const row2 = await row1.json()
+    console.log(row2)
+			myArray = row2.data
+			buildTable(myArray)
+			console.log(myArray)
+		
+    
+};
+fetchData();
+
+	function buildTable(data){
+		var table = document.getElementById('myTable')
+
+		for (var i = 0; i < data.length; i++){
+			var row = `<tr>
+							<td>${data[i].state}</td>
+							<td>${data[i].stateFreq}</td>
+							
+					  </tr>`
+			table.innerHTML += row
+
+
+		}
+	}
+
+</script>
+<footer>
+<div class="footer">
+<a href="index.html"><h3>Home </h3></a>
+<a href="about.html"><h3>About</h3></a>
+<a href="Gindy.html"><h3>Geta's IC3</h3></a>
+</div>
+<body style="background-color:rgb(0, 0, 0);"></body>
+</footer>

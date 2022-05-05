@@ -38,7 +38,10 @@ router.get('/disasters/:disaster_id', async (req, res) => {
 router.route("/stateloc")
       .get(async(req,res)=>{
         try {
-          const dt = await db.record_state.findAll();
+          const sqlStatement = 'SELECT state, COUNT(*) AS stateFreq FROM record_state GROUP BY state ORDER BY stateFreq DESC LIMIT 10'
+          const dt = await db.sequelizeDB.query(sqlStatement,{
+            type: sequelize.QueryTypes.SELECT
+          });
           const reply = dt.length > 0 ? { data: dt } : { message: 'no results found' };
           res.send (reply)
         } catch (error) {
