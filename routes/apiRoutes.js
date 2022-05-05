@@ -156,7 +156,6 @@ router.get('/stateloc/:record_id', async (req, res) => {
           res.error('Server error');
         }
       });//Not taking the input but saying its update
-      
       router.delete('/disasters/:disaster_id', async (req, res) => {
         try {
           await db.disaster_type.destroy({
