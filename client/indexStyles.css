@@ -38,6 +38,7 @@ p{
     width: 480px;
     border: 12px solid rgb(0, 0, 0);
     text-align:justify
+    
   }
   
   
@@ -49,6 +50,7 @@ p{
   
   .wrapper {
     display: flex;
+    
     
   }
   .container {
