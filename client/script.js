@@ -38,72 +38,96 @@ function getRandomIntInclusive(min, max) {
     accessToken: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
 }).addTo(map);
 
-var marker = L.marker([38.784, -95.872]).addTo(map);
+var myArray = []
 
-var popup = marker.bindPopup('<b>Type: Hurricane </b><br>State:');
-
-router.get('/stateloc/:record_id', async (req, res) => {
-  try {
-    const dt = await db.record_state.findAll({
-      where: {
-        record_id: req.params.record_id
-      }
-    });
-
-    res.json(dt);
-  } catch (err) {
-    console.error(err);
-    res.send(err);
-  }
-});
+  async function fetchData(){
+  const url = '/api/stateloc'
+  const row1 = await fetch(url)
+  const row2 = await row1.json()
+  //console.log(row2)
+  myArray = row2.data
+  mapMarkers(myArray)
+  //console.log(myArray)
+  
+    
+    
+    
+  };
+fetchData();//array not being accessed outside the function
 
 
-  async function mainEvent() {
-    // the async keyword means we can make API requests
-   
-   
-  
- 
-  
-  
-    const map = initMap('map');
-  
+//console.log(myArray)
 
 
+
+
+var state;
+var freq;
+
+
+async function mapMarkers()
+{
+for (var i = 0; i < myArray.length; i++) {
+   if(myArray[i].state=='IL'){
+
   
-    if (storedDataArray?.length > 0) {
-      // this statement is to prevent a race condition on data load
-      submit.style.display = 'block';
-  
-      let currentArray = [];
-      resto.addEventListener('input', async (event) => {
-        console.log(event.target.value);
-  
-        if (currentArray.length < 1) {
-          return;
-        }
-        const selectResto = currentArray.filter((item) => {
-          const lowerName = item.name.toLowerCase();
-          const lowerValue = event.target.value.toLowerCase();
-          return lowerName.includes(lowerValue);
-        });
-        console.log(selectResto);
-        createHtmlList(selectResto);
-      });
-  
-      
-      // inputListener(resto);
-      form.addEventListener('submit', async (submitEvent) => {
-        // async has to be declared all the way to get an await
-        submitEvent.preventDefault(); // This prevents your page from refreshing!
-        // console.log('form submission'); // this is substituting for a "breakpoint"
-        currentArray = restoArrayMake(storedDataArray);
-        console.log(currentArray);
-        createHtmlList(currentArray);
-        addMapMarkers(map, currentArray);
-      });
+        var marker = L.marker([40.6331, -89.3985]).addTo(map);
+        var popup = marker.bindPopup('<b>State:Illinois </b><br>Amount: '+myArray[i].stateFreq);
     }
-  }
+    else if(myArray[i].state=='AL'){
+      var marker = L.marker([32.3182, -86.9023]).addTo(map);
+      var popup = marker.bindPopup('<b>State:Alabama </b><br>Amount: '+myArray[i].stateFreq);
+
+    }
+    else if(myArray[i].state=='MS'){
+      var marker = L.marker([33.0000, -90.0000]).addTo(map);
+      var popup = marker.bindPopup('<b>State: Mississipi </b><br>Amount: '+myArray[i].stateFreq);
+
+    }
+    else if(myArray[i].state=='TX'){
+      var marker = L.marker([31.0000, -100.000]).addTo(map);
+      var popup = marker.bindPopup('<b>State: Texas </b><br>Amount: '+myArray[i].stateFreq);
+
+    }
+    else if(myArray[i].state=='GA'){
+      var marker = L.marker([33.247875, -83.441162]).addTo(map);
+      var popup = marker.bindPopup('<b>State: Georgia </b><br>Amount: '+myArray[i].stateFreq);
+
+    }
+    else if(myArray[i].state=='WI'){
+      var marker = L.marker([44.5000, -89.500000]).addTo(map);
+      var popup = marker.bindPopup('<b>State: Wisconsin </b><br>Amount: '+myArray[i].stateFreq);
+
+    }
+    else if(myArray[i].state=='NC'){
+      var marker = L.marker([35.8731, -80.793457]).addTo(map);
+      var popup = marker.bindPopup('<b>State: North Carolina </b><br>Amount: '+myArray[i].stateFreq);
+
+    }
+    else if(myArray[i].state=='CA'){
+      var marker = L.marker([36.7782, -119.417931]).addTo(map);
+      var popup = marker.bindPopup('<b>State: California </b><br>Amount: '+myArray[i].stateFreq);
+
+    }
+    else if(myArray[i].state=='AR'){
+      var marker = L.marker([34.0489, -111.0937]).addTo(map);
+      var popup = marker.bindPopup('<b>State: Arizona </b><br>Amount: '+myArray[i].stateFreq);
+
+    }
+    else if(myArray[i].state=='LA'){
+      var marker = L.marker([30.3918, -92.329]).addTo(map);
+      var popup = marker.bindPopup('<b>State: Louisiana </b><br>Amount: '+myArray[i].stateFreq);
+
+    }
+    
+  //var marker = L.marker([40.6331, -89.3985]).addTo(map);
+ // var popup = marker.bindPopup('<b>Type: Hurricane </b><br>State:');
+  //mapMarkers();
+  console.log(myArray[i])
+}
+
+
+}
+
+
   
-  // this actually runs first! It's calling the function above
-  document.addEventListener('DOMContentLoaded', async () => mainEvent()); // the async keyword means we can make API requests
