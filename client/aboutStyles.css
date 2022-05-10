@@ -32,13 +32,17 @@
   }
   a[href] {
 
-text-decoration: none;
+    text-decoration: none;
+    padding-bottom: 21px;
+    padding-top: 21px;
+    font-weight: bold;
     color: #ff0000;
-    font-size: 109%;
+    font-size: 150%;
     background-color: #555;
-    width: 457px;
+    width: 720px;
     border: 12px solid rgb(0, 0, 0);
-    text-align:center
+    text-align:center;
+    
   }
   img{  
     height: 200px;  
